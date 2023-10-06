@@ -1,8 +1,10 @@
 set (SRCS 
 	main.cpp 
-	MainWindow.cpp)
+	MainWindow.cpp
+	PlayerSheet.cpp)
 
-set (HEADERS MainWindow.h)
+set (HEADERS MainWindow.h
+	PlayerSheet.h)
 
 set (UI 
 	Mainwindow.ui)
