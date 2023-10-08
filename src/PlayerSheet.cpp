@@ -86,6 +86,10 @@ unsigned int PlayerSheet::getStones() const
     return _stones;
 }
 
+/// <summary>
+/// Le score total est défini par la somme des produits des étoiles par le score des quartiers pour chaque couleur auquel il est ajouté le nombre de caillou.
+/// </summary>
+/// <returns></returns>
 unsigned int PlayerSheet::getTotalScore() const
 {
     unsigned int score = _stones;
