@@ -18,10 +18,6 @@ public:
         Green,
     }; 
 
-    explicit PlayerSheet() = default;
-    explicit PlayerSheet(const PlayerSheet& other) = default;
-    explicit PlayerSheet(PlayerSheet&& other) noexcept = default;
-
     PlayerSheet& operator= (const PlayerSheet& playerSheet);
     PlayerSheet& operator= (PlayerSheet&& playerSheet) noexcept;
     bool operator== (const PlayerSheet& other) const;
