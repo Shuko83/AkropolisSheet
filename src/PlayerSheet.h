@@ -39,22 +39,23 @@ public:
     /// <returns></returns>
     PlayerSheet& operator= (PlayerSheet&& playerSheet) noexcept;
     /// <summary>
-    /// 
+    /// Cette méthode permet de comparer le score total d'une feuille de score à la feuille de score courante pour savoir si il sont égaux.
     /// </summary>
-    /// <param name="other"></param>
-    /// <returns>Return vrai si la valeur de tous les champs est identique. Return faux sinon.</returns>
+    /// <param name="other">L'aurtre feuille de score.</param>
+    /// <returns>Return vrai si la valeur du score total est égal au score total de l'autre feuille de score @other. Return faux sinon.</returns>
     bool operator== (const PlayerSheet& other) const;
     /// <summary>
-    /// 
+
+    /// Cette méthode permet de comparer le score total d'une feuille de score à la feuille de score courante pour savoir si il est supérieur.
     /// </summary>
-    /// <param name="other"></param>
-    /// <returns>Vrai si le score total de la feuille de score est supérieur au score total de l'autre feuille. Return faux sinon.</returns>
+    /// <param name="other">L'aurtre feuille de score.</param>
+    /// <returns>Vrai si le score total de la feuille de score est supérieur au score total de l'autre feuille @other. Return faux sinon.</returns>
     bool operator> (const PlayerSheet& other) const;
     /// <summary>
-    /// 
+    /// Cette méthode permet de comparer le score total d'une feuille de score à la feuille de score courante pour savoir si il est inférieur.
     /// </summary>
-    /// <param name="other"></param>
-    /// <returns>Vrai si le score total de la feuille de score est inférieur au score total de l'autre feuille. Return faux sinon.</returns>
+    /// <param name="other">L'aurtre feuille de score.</param>
+    /// <returns>Vrai si le score total de la feuille de score est inférieur au score total de l'autre feuille @other. Return faux sinon.</returns>
     bool operator< (const PlayerSheet& other) const;
 
     /// <summary>

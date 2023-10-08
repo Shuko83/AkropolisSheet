@@ -24,7 +24,7 @@ PlayerSheet& PlayerSheet::operator=(PlayerSheet&& playerSheet) noexcept
 
 bool PlayerSheet::operator==(const PlayerSheet& other) const
 {
-    return _stones == other._stones && _scoreDistrict == other._scoreDistrict && _stars == other._stars;
+    return getTotalScore() == other.getTotalScore();
 }
 
 bool PlayerSheet::operator>(const PlayerSheet& other) const
