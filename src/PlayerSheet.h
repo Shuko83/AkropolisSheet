@@ -6,9 +6,8 @@
 
 class QString;
 
-class PlayerSheet : public QObject
+class PlayerSheet
 {
-    Q_OBJECT
 public:
     enum class Color
     {
@@ -18,29 +17,37 @@ public:
         Yellow,
         Green,
     }; 
-    explicit PlayerSheet(QObject* parent = nullptr);
 
-    static QString getColorAsString(Color color);
+    explicit PlayerSheet() = default;
+    explicit PlayerSheet(const PlayerSheet& other) = default;
+    explicit PlayerSheet(PlayerSheet&& other) noexcept = default;
+
+    PlayerSheet& operator= (const PlayerSheet& playerSheet);
+    PlayerSheet& operator= (PlayerSheet&& playerSheet) noexcept;
+    bool operator== (const PlayerSheet& other) const;
+    bool operator> (const PlayerSheet& other) const;
+    bool operator< (const PlayerSheet& other) const;
+
+    void swap(PlayerSheet& playerSheet) noexcept;
+
     static QList<Color> getAllColor();
 
-    void setPlaceNumber(Color color, int number);
-    void setScoreDistrict(Color color, int number);
-    void setStones(int number);
+    void setStarsNumber(Color color, unsigned int number);
+    void setScoreDistrict(Color color, unsigned int number);
+    void setStones(unsigned int number);
 
-    int getScoreDistrict(Color color) const;
-    int getPlaceNumber(Color color) const;
-    int getStones() const;
+    unsigned int getScoreDistrict(Color color) const;
+    unsigned int getStars(Color color) const;
+    unsigned int getStones() const;
+
+    unsigned int getTotalScore() const;
 
     void reset();
-signals:
-    void stonesChanged();
-    void placeNumberChanged(Color color, int number);
-    void scoreDistrictChanged(Color color, int number);
 
 private:
-    QHash<Color,int> _places;
-    QHash<Color,int> _scoreDistrict;
-    int _stones = 0;
+    QHash<Color, unsigned int> _stars;
+    QHash<Color, unsigned int> _scoreDistrict;
+    unsigned int _stones = 0;
 };
 
 #endif // PLAYERSHEET_H

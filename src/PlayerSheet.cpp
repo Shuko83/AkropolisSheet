@@ -1,34 +1,47 @@
 #include "PlayerSheet.h"
 
-PlayerSheet::PlayerSheet(QObject * parent)
-    :  QObject(parent)
+#include <algorithm>
+
+PlayerSheet& PlayerSheet::operator=(const PlayerSheet& playerSheet)
 {
+    if (this != &playerSheet)
+    {
+        _scoreDistrict = playerSheet._scoreDistrict;
+        _stars = playerSheet._stars;
+        _stones = playerSheet._stones;
+    }
+    return *this;
 }
 
-QString PlayerSheet::getColorAsString(Color color)
+PlayerSheet& PlayerSheet::operator=(PlayerSheet&& playerSheet) noexcept
 {
-    QString val;
-    switch (color)
-    {
-    case PlayerSheet::Color::Red:
-        val = tr("Red");
-        break;
-    case PlayerSheet::Color::Blue:
-        val = tr("Blue");
-        break;
-    case PlayerSheet::Color::Purple:
-        val = tr("Purple");
-        break;
-    case PlayerSheet::Color::Yellow:
-        val = tr("Yellow");
-        break;
-    case PlayerSheet::Color::Green:
-        val = tr("Green");
-        break;
-    default:
-        break;
-    }
-    return val;
+    _scoreDistrict = std::move(playerSheet._scoreDistrict);
+    _stars = std::move(playerSheet._stars);
+    _stones = playerSheet._stones;
+
+    return *this;
+}
+
+bool PlayerSheet::operator==(const PlayerSheet& other) const
+{
+    return _stones == other._stones && _scoreDistrict == other._scoreDistrict && _stars == other._stars;
+}
+
+bool PlayerSheet::operator>(const PlayerSheet& other) const
+{
+    return getTotalScore() > other.getTotalScore();
+}
+
+bool PlayerSheet::operator<(const PlayerSheet& other) const
+{
+    return !(this>&other);
+}
+
+void PlayerSheet::swap(PlayerSheet& playerSheet) noexcept
+{
+    std::swap(_stones, playerSheet._stones);
+    std::swap(_stars, playerSheet._stars);
+    std::swap(_scoreDistrict, playerSheet._scoreDistrict);
 }
 
 QList<PlayerSheet::Color> PlayerSheet::getAllColor()
@@ -43,46 +56,44 @@ QList<PlayerSheet::Color> PlayerSheet::getAllColor()
     return colors;
 }
 
-void PlayerSheet::setPlaceNumber(PlayerSheet::Color color, int number)
+void PlayerSheet::setStarsNumber(PlayerSheet::Color color, unsigned int number)
 {
-    if(_places.value(color,0) != number)
-    {
-        _places[color] = number;
-        emit placeNumberChanged(color,number);
-    }
+    _stars[color] = number;
 }
 
-void PlayerSheet::setScoreDistrict(PlayerSheet::Color color, int number)
+void PlayerSheet::setScoreDistrict(PlayerSheet::Color color, unsigned int number)
 {
-    if(_scoreDistrict.value(color,0) != number)
-    {
-        _scoreDistrict[color] = number;
-        emit scoreDistrictChanged(color, number);
-    }
+    _scoreDistrict[color] = number;
 }
 
-void PlayerSheet::setStones(int number)
+void PlayerSheet::setStones(unsigned int number)
 {
-    if(_stones != number)
-    {
-        _stones = number;
-        emit stonesChanged();
-    }
+    _stones = number;
 }
 
-int PlayerSheet::getScoreDistrict(PlayerSheet::Color color) const
+unsigned int PlayerSheet::getScoreDistrict(PlayerSheet::Color color) const
 {
     return _scoreDistrict.value(color,0);
 }
 
-int PlayerSheet::getPlaceNumber(PlayerSheet::Color color) const
+unsigned int PlayerSheet::getStars(PlayerSheet::Color color) const
 {
-    return _places.value(color,0);
+    return _stars.value(color,0);
 }
 
-int PlayerSheet::getStones() const
+unsigned int PlayerSheet::getStones() const
 {
     return _stones;
+}
+
+unsigned int PlayerSheet::getTotalScore() const
+{
+    unsigned int score = _stones;
+    for (auto color : getAllColor())
+    {
+        score += _stars.value(color) * _scoreDistrict.value(color);
+    }
+    return score;
 }
 
 void PlayerSheet::reset()
@@ -90,7 +101,7 @@ void PlayerSheet::reset()
     setStones(0);
     for(Color color : {Color::Blue, Color::Green, Color::Purple, Color::Red, Color::Yellow})
     {
-        setPlaceNumber(color,0);
+        setStarsNumber(color,0);
         setScoreDistrict(color,0);
     }
 }
